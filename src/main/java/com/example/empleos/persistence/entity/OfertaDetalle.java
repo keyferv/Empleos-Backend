@@ -3,6 +3,9 @@ package com.example.empleos.persistence.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+import java.time.LocalTime;
+
 
 @Setter
 @Getter
@@ -23,12 +26,12 @@ public class OfertaDetalle {
     private String location;
 
     @Column(name = "start_hour")
-    private String startHour;
+    private LocalTime startHour;
 
     @Column(name = "end_hour")
-    private String endHour;
+    private LocalTime endHour;
 
     @Column(name = "process_selection")
     private String processSelection;
-    private String salary;
+    private BigDecimal salary;
 }

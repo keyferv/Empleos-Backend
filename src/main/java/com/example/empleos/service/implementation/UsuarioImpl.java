@@ -64,28 +64,24 @@ public class UsuarioImpl implements UsuarioServices {
         Usuarios usuario = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid usuario ID: " + idUsuario + " no existe"));
 
-        // 📌 Actualizar el estado por nombre
-        Estado estado = estadoRepository.findByType(usuarioRequestDTO.getEstado().getType())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid estado: " + usuarioRequestDTO.getEstado()));
-        usuario.setEstado(estado);
+        // 📌 Actualizar el estado por ID (si se proporciona)
+        if (usuarioRequestDTO.getEstadoId() != null) {
+            Estado estado = estadoRepository.findById(usuarioRequestDTO.getEstadoId())
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid estado ID"));
+            usuario.setEstado(estado);
+        }
 
-        // 🔄 Manejar los roles (añadir y eliminar por nombre)
-        Set<Roles> nuevosRoles = usuarioRequestDTO.getRoles().stream()
-                .map(rolesEnum -> {
-                    try {
-                        // Validar el nombre del rol con el ENUM
-                        RolesEnum rolesEnumValue = RolesEnum.valueOf(rolesEnum);
-                        return roleRepository.findByRolesEnum(rolesEnumValue)
-                                .orElseThrow(() -> new IllegalArgumentException("Invalid role: " + rolesEnum));
-                    } catch (IllegalArgumentException e) {
-                        throw new IllegalArgumentException("Invalid role: " + rolesEnum);
-                    }
-                })
-                .collect(Collectors.toSet());
+        // 🔄 Manejar los roles (por IDs, si se proporcionan)
+        if (usuarioRequestDTO.getRoleIds() != null && !usuarioRequestDTO.getRoleIds().isEmpty()) {
+            Set<Roles> nuevosRoles = usuarioRequestDTO.getRoleIds().stream()
+                    .map(roleId -> roleRepository.findById(roleId)
+                            .orElseThrow(() -> new IllegalArgumentException("Invalid role ID")))
+                    .collect(Collectors.toSet());
 
-        // Limpiar roles actuales y añadir los nuevos
-        usuario.getRoles().clear();         // Limpiar roles actuales
-        usuario.getRoles().addAll(nuevosRoles); // Añadir nuevos roles
+            // Limpiar roles actuales y añadir los nuevos
+            usuario.getRoles().clear();
+            usuario.getRoles().addAll(nuevosRoles);
+        }
 
         // 🔐 Actualizar la contraseña (si es diferente y no está vacía)
         if (usuarioRequestDTO.getPassword() != null && !usuarioRequestDTO.getPassword().isEmpty()) {

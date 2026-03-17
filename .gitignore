@@ -31,3 +31,16 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Documentation ###
+*.md
+!README.md
+!HELP.md
+
+### Sensitive Files ###
+.env
+
+### Project Documentation Files ###
+ARQUITECTURA.md
+SEGURIDAD.md
+INTERFAZ.md

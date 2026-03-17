@@ -3,6 +3,7 @@ package com.example.empleos.persistence.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -26,15 +27,17 @@ public class Vacantes {
     
     private String description;
     private Date date;
-    private Double salary;
-    private Integer featured;
+    private BigDecimal salary;
+    private Boolean featured;
+    @Builder.Default
     private String image = "no-image.png";
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "estado_id", nullable = false)
     private Estado estado;
 
-    @OneToMany(mappedBy = "vacancy", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "vacancy", cascade = CascadeType.ALL)
+    @Builder.Default
     private Set<Solicitudes> requests = new HashSet<>();
 
     // Una vacante tiene una oferta de detalle - OneToOne
@@ -48,5 +51,6 @@ public class Vacantes {
             joinColumns = @JoinColumn(name = "vacante_id"),
             inverseJoinColumns = @JoinColumn(name = "categoria_id")
     )
+    @Builder.Default
     private Set<Categoria> categories = new HashSet<>();
 }

@@ -19,20 +19,20 @@ public class Solicitudes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "request_date")
+    @Column(name = "request_date", nullable = false)
     private Date requestDate;
     private String file;
     private String comment;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vacante_id")
     private Vacantes vacancy;
 
-//    @ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "usuario_id")
-//    private Usuarios users;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuarios usuario;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "estado_id", nullable = false)
     private Estado estado;
 

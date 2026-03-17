@@ -29,6 +29,7 @@ public class Usuarios {
     private String username;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "date_register", nullable = false, updatable = false)
     private Date dateRegister;
 
     @Temporal(TemporalType.DATE)
@@ -42,15 +43,19 @@ public class Usuarios {
     private String certifications;
 
     @Column(name = "is_enabled", nullable = false)
+    @Builder.Default
     private boolean isEnabled = true; // ✅ Por defecto: activo
 
-    @Column(name = "account_No_Expired", nullable = false)
+    @Column(name = "account_no_expired", nullable = false)
+    @Builder.Default
     private boolean accountNoExpired = true;
 
-    @Column(name = "account_No_Locked", nullable = false)
+    @Column(name = "account_no_locked", nullable = false)
+    @Builder.Default
     private boolean accountNoLocked = true;
 
-    @Column(name = "credential_No_Expired", nullable = false)
+    @Column(name = "credential_no_expired", nullable = false)
+    @Builder.Default
     private boolean credentialNoExpired = true;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
@@ -59,10 +64,12 @@ public class Usuarios {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
+    @Builder.Default
     private Set<Roles> roles = new HashSet<>();
 
-//    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private Set<Solicitudes> requests = new HashSet<>();
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @Builder.Default
+    private Set<Solicitudes> requests = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "estado_id", nullable = false)

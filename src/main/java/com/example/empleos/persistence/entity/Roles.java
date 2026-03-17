@@ -24,9 +24,11 @@ public class Roles {
     private Integer id;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "roles_enum")
     private RolesEnum rolesEnum;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(name = "role_permissions", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "permission_id"))
+    @Builder.Default
     private Set<Permission> permissionList = new HashSet<>();
 }

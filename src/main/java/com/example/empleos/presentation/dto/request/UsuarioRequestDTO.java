@@ -1,6 +1,6 @@
 package com.example.empleos.presentation.dto.request;
 
-import com.example.empleos.persistence.entity.Estado;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
@@ -28,10 +28,10 @@ public class UsuarioRequestDTO {
     private String certifications;
 
     private Integer estadoId; // Solo el ID del estado
-    private Estado estado;
+
 
     private Set<Integer> roleIds; // Lista de IDs de roles
-    private Set<String> roles; // Lista de nombres de roles
+
 
     private boolean isEnabled;
     private boolean accountNoExpired;
