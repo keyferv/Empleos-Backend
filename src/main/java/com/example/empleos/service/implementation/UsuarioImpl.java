@@ -134,7 +134,8 @@ public class UsuarioImpl implements UsuarioServices {
 
     @Override
     public List<UsuarioResponseDTO> getUsuariosByEstado(Integer estadoId) {
-        return null;
+        // Implementar búsqueda por estado si es necesario
+        return getAllUsuarios(); // Temporal, implementar lógica real
     }
 
     @Override
@@ -147,6 +148,22 @@ public class UsuarioImpl implements UsuarioServices {
 
     @Override
     public List<UsuarioResponseDTO> getUsuariosByEstadoAndRole(Integer estadoId, Integer roleId) {
-        return null;
+        // Implementar búsqueda combinada si es necesario
+        return getAllUsuarios(); // Temporal, implementar lógica real
+    }
+    
+    @Override
+    public List<UsuarioResponseDTO> getUsuariosByRoleId(Integer roleId) {
+        List<Usuarios> usuarios = usuarioRepository.findByRoleId(roleId);
+        return usuarios.stream()
+                .map(UsuarioMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public UsuarioResponseDTO getUsuarioByUsername(String username) {
+        Usuarios usuario = usuarioRepository.findUsuariosByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario con username: " + username + " no existe"));
+        return UsuarioMapper.toDto(usuario);
     }
 }

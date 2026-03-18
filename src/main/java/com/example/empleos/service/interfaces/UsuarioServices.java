@@ -20,4 +20,9 @@ public interface UsuarioServices {
     List<UsuarioResponseDTO> getUsuariosByEstado(Integer estadoId);
     List<UsuarioResponseDTO> getUsuariosByRole(Integer roleId);
     List<UsuarioResponseDTO> getUsuariosByEstadoAndRole(Integer estadoId, Integer roleId);
+    
+    // Método adicional para obtener usuarios por rol usando el nuevo método del repositorio
+    List<UsuarioResponseDTO> getUsuariosByRoleId(Integer roleId);
+
+    UsuarioResponseDTO getUsuarioByUsername(String username);
 }

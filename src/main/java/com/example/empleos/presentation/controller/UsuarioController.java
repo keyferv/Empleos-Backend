@@ -52,12 +52,15 @@ public class UsuarioController {
         return new ResponseEntity<>(usuarioResponseDTO, HttpStatus.OK);
     }
 
-    //Trarr un usuario por su roleID
+    //Traer un usuario por su roleID (usando el nuevo método)
     @GetMapping("/findByRole/{roleId}")
     public ResponseEntity<List<UsuarioResponseDTO>> findByRole(@PathVariable("roleId") Integer roleId) {
-        return new ResponseEntity<>(usuarioServices.getUsuariosByRole(roleId), HttpStatus.OK);
+        return new ResponseEntity<>(usuarioServices.getUsuariosByRoleId(roleId), HttpStatus.OK);
     }
-
-
-
+    // Traer un usuario por su username
+    @GetMapping("/username/{username}")
+    public ResponseEntity<UsuarioResponseDTO> findByUsername(@PathVariable("username") String username) {
+        UsuarioResponseDTO usuarioResponseDTO = usuarioServices.getUsuarioByUsername(username);
+        return new ResponseEntity<>(usuarioResponseDTO, HttpStatus.OK);
+    }
 }

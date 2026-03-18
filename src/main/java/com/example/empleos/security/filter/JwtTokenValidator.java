@@ -34,21 +34,26 @@ public class JwtTokenValidator extends OncePerRequestFilter {
 
         String jwtToken = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        if (jwtToken != null) {
+        if (jwtToken != null && jwtToken.startsWith("Bearer ")) {
             jwtToken = jwtToken.substring(7);
 
-            DecodedJWT decodedJWT = jwtUtils.validateToken(jwtToken);
+            try {
+                DecodedJWT decodedJWT = jwtUtils.validateToken(jwtToken);
 
-            String username = jwtUtils.extractUsername(decodedJWT);
-            String stringAuthorities = jwtUtils.getSpecificClaim(decodedJWT, "authorities").asString();
+                String username = jwtUtils.extractUsername(decodedJWT);
+                String stringAuthorities = jwtUtils.getSpecificClaim(decodedJWT, "authorities").asString();
 
-            Collection<? extends GrantedAuthority> authorities = AuthorityUtils.commaSeparatedStringToAuthorityList(stringAuthorities);
+                Collection<? extends GrantedAuthority> authorities = AuthorityUtils.commaSeparatedStringToAuthorityList(stringAuthorities);
 
-            SecurityContext context = SecurityContextHolder.createEmptyContext();
-            Authentication authenticationToken = new UsernamePasswordAuthenticationToken(username, null, authorities);
-            context.setAuthentication(authenticationToken);
-            SecurityContextHolder.setContext(context);
-
+                SecurityContext context = SecurityContextHolder.createEmptyContext();
+                Authentication authenticationToken = new UsernamePasswordAuthenticationToken(username, null, authorities);
+                context.setAuthentication(authenticationToken);
+                SecurityContextHolder.setContext(context);
+            } catch (Exception e) {
+                // Si el token es inválido, simplemente no establecemos el contexto de seguridad.
+                // Spring Security denegará el acceso más adelante solo si la ruta está protegida.
+                SecurityContextHolder.clearContext();
+            }
         }
         filterChain.doFilter(request, response);
     }

@@ -4,5 +4,7 @@ public enum EstadoType {
     ACTIVO,
     INACTIVO,
     PENDIENTE,
-    SUSPENDIDO
+    SUSPENDIDO,
+    CERRADO,
+    EXPIRADO
 }

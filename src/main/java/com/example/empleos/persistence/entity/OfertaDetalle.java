@@ -1,5 +1,6 @@
 package com.example.empleos.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,6 +15,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @ToString
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "oferta_detalle")
 public class OfertaDetalle {
 

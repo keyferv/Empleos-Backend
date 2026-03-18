@@ -1,5 +1,7 @@
 package com.example.empleos.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,6 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @ToString
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Categoria {
 
     @Id
@@ -24,6 +27,7 @@ public class Categoria {
     private String categoryName;
     private String description;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "categories")
     @Builder.Default
     private Set<Vacantes> vacancies = new HashSet<>();

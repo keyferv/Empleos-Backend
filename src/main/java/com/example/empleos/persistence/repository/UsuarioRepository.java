@@ -2,6 +2,8 @@ package com.example.empleos.persistence.repository;
 
 import com.example.empleos.persistence.entity.Usuarios;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,4 +15,7 @@ public interface UsuarioRepository extends JpaRepository<Usuarios, Integer> {
     Optional<Usuarios> findUsuariosByUsername(String username);
 
     List<Usuarios> findByRolesId(Integer roleId);
+    
+    @Query("SELECT u FROM Usuarios u JOIN u.roles r WHERE r.id = :roleId")
+    List<Usuarios> findByRoleId(@Param("roleId") Integer roleId);
 }

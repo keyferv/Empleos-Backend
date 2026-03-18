@@ -1,5 +1,6 @@
 package com.example.empleos.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,6 +17,7 @@ import java.util.Set;
 @NoArgsConstructor
 @ToString
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Vacantes {
 
     @Id
@@ -27,6 +29,10 @@ public class Vacantes {
     
     private String description;
     private Date date;
+    
+    @Column(name = "expiration_date")
+    private Date expirationDate;
+
     private BigDecimal salary;
     private Boolean featured;
     @Builder.Default
@@ -35,6 +41,18 @@ public class Vacantes {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "estado_id", nullable = false)
     private Estado estado;
+
+    // 🟢 Al crear una vacante, se establece la fecha y la expiración automáticamente
+    @PrePersist
+    public void prePersist() {
+        if (date == null) {
+            this.date = new Date();
+        }
+        // Expiración por defecto: 30 días si no se pone una
+        if (expirationDate == null) {
+            this.expirationDate = new Date(this.date.getTime() + (30L * 24 * 60 * 60 * 1000));
+        }
+    }
 
     @OneToMany(mappedBy = "vacancy", cascade = CascadeType.ALL)
     @Builder.Default
