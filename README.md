@@ -19,7 +19,7 @@ La configuración principal está en `src/main/resources/application.properties`
 Valores por defecto en este repositorio:
 - URL: `jdbc:postgresql://localhost:5432/empleos`
 - Usuario: `postgres`
-- Password: `1234`
+- Password: ``
 
 Asegúrate de crear la base de datos `empleos` y configurar las credenciales si difieren.
 
